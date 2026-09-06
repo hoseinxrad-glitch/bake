@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>پنل ادمین — چت‌یار</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<div id="password-gate" class="auth-screen hidden">
+  <div class="auth-card">
+    <div class="brand">
+      <span class="brand-mark">🔒</span>
+      <h1>ورود به پنل ادمین</h1>
+      <p class="brand-sub">برای دسترسی به این بخش، رمز پنل ادمین را وارد کن</p>
+    </div>
+    <form id="password-form" class="auth-form">
+      <label>رمز پنل ادمین
+        <input type="password" id="admin-password-input" required autocomplete="off" />
+      </label>
+      <p class="form-error" id="password-error"></p>
+      <button type="submit" class="primary-btn">ورود</button>
+    </form>
+  </div>
+</div>
+
+<div id="admin-app" class="admin-app hidden">
+  <header class="admin-header">
+    <div class="admin-brand">
+      <span class="brand-mark">چ</span>
+      <h1>پنل ادمین چت‌یار</h1>
+    </div>
+    <a href="index.html" class="icon-btn">بازگشت به چت</a>
+  </header>
+
+  <section class="stats-grid" id="stats-grid"></section>
+
+  <nav class="admin-tabs">
+    <button class="tab-btn active" data-panel="users">کاربران</button>
+    <button class="tab-btn" data-panel="rooms">گفتگوها</button>
+    <button class="tab-btn" data-panel="ai">دستیار هوشمند</button>
+    <button class="tab-btn" data-panel="appearance">ظاهر اپ</button>
+  </nav>
+
+  <section id="panel-users" class="admin-panel">
+    <div class="panel-toolbar">
+      <input type="text" id="admin-user-search" placeholder="جستجوی نام یا نام کاربری..." />
+    </div>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>شناسه</th><th>نام نمایشی</th><th>نام کاربری</th><th>وضعیت</th><th>نقش</th><th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody id="users-table-body"></tbody>
+    </table>
+  </section>
+
+  <section id="panel-rooms" class="admin-panel hidden">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>شناسه</th><th>عنوان</th><th>نوع</th><th>اعضا</th><th>پیام‌ها</th><th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody id="rooms-table-body"></tbody>
+    </table>
+  </section>
+
+  <section id="panel-ai" class="admin-panel hidden">
+    <div class="ai-settings-card">
+      <p class="ai-settings-hint">
+        اسم مدل و کلید(های) API دستیار هوشمند را اینجا تنظیم کن — بدون نیاز به تنظیم متغیر محیطی
+        یا ری‌استارت سرور. تغییرات فوری اعمال می‌شود و برای همیشه ذخیره می‌ماند.
+      </p>
+      <div class="ai-settings-row">
+        <label for="ai-model-input">اسم دقیق مدل</label>
+        <input type="text" id="ai-model-input" placeholder="مثلاً claude-fable-5-1" />
+      </div>
+      <button id="ai-model-save" class="primary-btn ai-save-btn">ذخیره‌ی مدل</button>
+      <p id="ai-model-status" class="ai-settings-status"></p>
+
+      <div class="ai-settings-row" style="margin-top:18px;">
+        <label for="ai-keys-input">کلید(های) API (با کاما جدا کن)</label>
+        <textarea id="ai-keys-input" rows="3" placeholder="sk-key1,sk-key2,sk-key3"></textarea>
+      </div>
+      <button id="ai-keys-save" class="primary-btn ai-save-btn">ذخیره‌ی کلیدها</button>
+      <p id="ai-keys-status" class="ai-settings-status"></p>
+
+      <div class="ai-settings-row" style="margin-top:18px;">
+        <label for="ai-stt-input">مدل تبدیل گفتار به متن (STT)</label>
+        <input type="text" id="ai-stt-input" placeholder="مثلاً whisper-1" />
+      </div>
+      <div class="ai-settings-row">
+        <label for="ai-tts-input">مدل تبدیل متن به گفتار (TTS)</label>
+        <input type="text" id="ai-tts-input" placeholder="مثلاً tts-1" />
+      </div>
+      <div class="ai-settings-row">
+        <label for="ai-voice-input">صدای دستیار (voice)</label>
+        <input type="text" id="ai-voice-input" placeholder="مثلاً alloy" />
+      </div>
+      <button id="ai-voice-save" class="primary-btn ai-save-btn">ذخیره‌ی تنظیمات صوتی</button>
+      <p id="ai-voice-status" class="ai-settings-status"></p>
+
+      <p class="ai-settings-meta" id="ai-settings-meta"></p>
+    </div>
+  </section>
+
+  <section id="panel-appearance" class="admin-panel hidden">
+    <div class="ai-settings-card">
+      <p class="ai-settings-hint">
+        رنگ اصلی (accent) اپلیکیشن را برای همه‌ی کاربران تغییر بده.
+      </p>
+      <div class="ai-settings-row">
+        <label for="theme-color-input">رنگ اصلی</label>
+        <div class="color-row">
+          <input type="color" id="theme-color-picker" value="#3FA9F5" />
+          <input type="text" id="theme-color-input" placeholder="#3FA9F5" />
+        </div>
+      </div>
+      <button id="theme-save" class="primary-btn ai-save-btn">ذخیره و اعمال</button>
+      <p id="theme-status" class="ai-settings-status"></p>
+    </div>
+  </section>
+</div>
+
+<script src="config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

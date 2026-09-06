@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>چت‌یار</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===== صفحه ورود / ثبت‌نام ===== -->
+<section id="auth-screen" class="auth-screen">
+  <div class="auth-card">
+    <div class="brand">
+      <span class="brand-mark">چ</span>
+      <h1>چت‌یار</h1>
+      <p class="brand-sub">پیام‌رسانی ساده، سریع و بدون هیاهو</p>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="tab-btn active" data-tab="login">ورود</button>
+      <button class="tab-btn" data-tab="register">ساخت حساب</button>
+    </div>
+
+    <form id="login-form" class="auth-form">
+      <label>نام کاربری
+        <input type="text" id="login-username" required autocomplete="username" />
+      </label>
+      <label>رمز عبور
+        <input type="password" id="login-password" required autocomplete="current-password" />
+      </label>
+      <p class="form-error" id="login-error"></p>
+      <button type="submit" class="primary-btn">ورود به چت‌یار</button>
+    </form>
+
+    <form id="register-form" class="auth-form hidden">
+      <label>نام نمایشی
+        <input type="text" id="register-name" required />
+      </label>
+      <label>نام کاربری
+        <input type="text" id="register-username" required />
+      </label>
+      <label>رمز عبور
+        <input type="password" id="register-password" required minlength="4" />
+      </label>
+      <p class="form-error" id="register-error"></p>
+      <button type="submit" class="primary-btn">ساخت حساب و ورود</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== صفحه اصلی چت ===== -->
+<section id="chat-screen" class="chat-screen hidden">
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="me">
+        <span class="avatar" id="me-avatar"></span>
+        <span id="me-name"></span>
+      </div>
+      <div class="top-actions">
+        <a href="admin.html" id="admin-link" class="icon-btn hidden" title="پنل ادمین">ادمین</a>
+        <button id="logout-btn" class="icon-btn" title="خروج">خروج</button>
+      </div>
+    </div>
+
+    <div class="new-chat-row">
+      <input type="text" id="user-search" placeholder="جستجوی کاربر برای گفتگو..." />
+    </div>
+    <ul id="user-results" class="user-results hidden"></ul>
+
+    <button id="new-group-btn" class="new-group-btn">+ ساخت گروه یا کانال</button>
+
+    <button id="assistant-btn" class="assistant-shortcut">
+      <span class="avatar assistant-avatar">🤖</span>
+      <span>
+        <span class="room-name">دستیار هوشمند</span>
+        <span class="room-preview">هر سوالی داری بپرس</span>
+      </span>
+    </button>
+
+    <div class="rooms-header">گفتگوها</div>
+    <ul id="room-list" class="room-list"></ul>
+  </aside>
+
+  <main class="chat-main">
+    <div id="empty-state" class="empty-state">
+      <p>یک گفتگو را انتخاب کن یا کاربری را برای شروع چت جستجو کن</p>
+    </div>
+
+    <div id="active-chat" class="active-chat hidden">
+      <header class="chat-header">
+        <button id="mobile-back-btn" class="mobile-back-btn" title="بازگشت به لیست">→</button>
+        <span id="chat-title"></span>
+        <span id="chat-status" class="chat-status"></span>
+      </header>
+
+      <div id="upload-status" class="upload-status hidden"></div>
+
+      <div id="messages" class="messages"></div>
+
+      <div id="channel-readonly-note" class="channel-readonly-note hidden">
+        این کانال است — فقط سازنده‌ی کانال می‌تواند پیام ارسال کند.
+      </div>
+
+      <form id="send-form" class="send-form">
+        <input type="file" id="file-input" hidden accept="image/*,.pdf,.doc,.docx,.zip,.rar,.txt,.mp3,.mp4" />
+        <button type="button" id="attach-btn" class="icon-round-btn" title="ارسال فایل">📎</button>
+        <button type="button" id="voice-btn" class="icon-round-btn" title="ضبط پیام صوتی">🎤</button>
+        <input type="text" id="message-input" placeholder="پیام خود را بنویس..." autocomplete="off" />
+        <button type="submit" class="send-btn">ارسال</button>
+      </form>
+    </div>
+  </main>
+</section>
+
+<!-- ===== مودال ساخت گروه/کانال ===== -->
+<div id="group-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h2>ساخت گروه یا کانال جدید</h2>
+
+    <div class="group-type-toggle">
+      <button type="button" class="type-btn active" data-type="group">گروه</button>
+      <button type="button" class="type-btn" data-type="channel">کانال</button>
+    </div>
+    <p class="modal-hint" id="group-type-hint">در گروه همه‌ی اعضا می‌توانند پیام بفرستند.</p>
+
+    <label class="modal-label">اسم گروه/کانال
+      <input type="text" id="group-name-input" placeholder="مثلاً دوستان دانشگاه" />
+    </label>
+
+    <label class="modal-label">اعضا را انتخاب کن
+      <input type="text" id="group-member-search" placeholder="جستجوی کاربر..." />
+    </label>
+    <ul id="group-member-list" class="group-member-list"></ul>
+    <p class="modal-hint" id="group-selected-count">۰ عضو انتخاب شده</p>
+
+    <p class="form-error" id="group-modal-error"></p>
+
+    <div class="modal-actions">
+      <button type="button" id="group-cancel-btn" class="icon-btn">انصراف</button>
+      <button type="button" id="group-create-btn" class="primary-btn">ساخت</button>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
