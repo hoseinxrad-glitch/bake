@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# دیتابیس و فایل‌های آپلودشده (این‌ها باید محلی/سروری بمانند، نه در گیت)
+backend/chat.db
+backend/uploads/
+
+# فایل‌های سیستم‌عامل
+.DS_Store
+Thumbs.db
